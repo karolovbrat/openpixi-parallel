@@ -18,10 +18,6 @@
  */
 package org.openpixi.pixi.physics.boundary;
 
-import org.openpixi.pixi.physics.*;
-import org.openpixi.pixi.physics.force.Force;
-import org.openpixi.pixi.physics.solver.*;
-
 public class Boundary {
 	public double xmin;
 	public double xmax;
@@ -37,9 +33,5 @@ public class Boundary {
 		this.ymin = ymin;
 		this.xmax = xmax;
 		this.ymax = ymax;
-	}
-
-	public void check(Particle2D particle, Force f, Solver s, double step) {
-		
 	}
 }

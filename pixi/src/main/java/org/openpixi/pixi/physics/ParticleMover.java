@@ -22,7 +22,7 @@ package org.openpixi.pixi.physics;
 
 public class ParticleMover {
 
-	public static void particlePush(Simulation s) {
+	public static void particlePush(Simulation s) {        
 		for (Particle2D p : s.particles) {
 			s.psolver.step(p, s.f, s.tstep);
 			s.boundary.check(p, s.f, s.psolver, s.tstep);

@@ -27,10 +27,10 @@ import org.openpixi.pixi.physics.force.SimpleGridForce;
 
 public class MainBatch {
 
-	public static final int num_particles = 1000;
+	public static final int num_particles = 100000;
 	public static final double particle_radius = 0.1;
 	/**Total number of timesteps*/
-	public static final int steps = 1000;
+	public static final int steps = 100000;
 	
 	public static Simulation s1;
 

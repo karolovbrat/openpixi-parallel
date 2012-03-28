@@ -22,7 +22,7 @@ import org.openpixi.pixi.physics.*;
 import org.openpixi.pixi.physics.force.Force;
 import org.openpixi.pixi.physics.solver.*;
 
-public class PeriodicBoundary extends Boundary {
+public class PeriodicBoundary extends JBoundary {
 
 	public PeriodicBoundary() {
 		super();

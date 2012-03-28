@@ -22,7 +22,7 @@ import org.openpixi.pixi.physics.*;
 import org.openpixi.pixi.physics.force.Force;
 import org.openpixi.pixi.physics.solver.*;
 
-public class HardWallBoundary extends Boundary {
+public class HardWallBoundary extends JBoundary {
 
 	public HardWallBoundary() {
 		super();

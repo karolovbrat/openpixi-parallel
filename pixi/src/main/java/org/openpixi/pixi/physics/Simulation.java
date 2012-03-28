@@ -41,12 +41,13 @@ public class Simulation {
 	/**Contains all Particle2D objects*/
 	public ArrayList<Particle2D> particles;
 	public CombinedForce  f;
-	public Boundary boundary;
+	public JBoundary boundary;
 	
 	public Solver psolver;
 	public FieldSolver fsolver;
 	public CurrentGrid currentGrid;
 	public Collision collision;
+    
 	//public Detector detector;
 	//public CollisionAlgorithm algorithm;
 
@@ -58,16 +59,16 @@ public class Simulation {
 
 		/**Contains all Particle2D objects*/
 		particles = new ArrayList<Particle2D>(0);
-		f= new CombinedForce();
+		f = new CombinedForce();        
 		boundary = new HardWallBoundary();
+        boundary.setBoundaries(0, 0, width, height);
 		
-		psolver = new Boris();
+		psolver = new Euler();
 		fsolver = new SimpleSolver();
 		currentGrid = new CurrentGrid(this);
 		//detector = new Detector();
 		//algorithm = new CollisionAlgorithm();
 		collision = new Collision();
-		
 		//collision = new ElasticCollisionSweepPrune();
 	}
 	
@@ -80,8 +81,8 @@ public class Simulation {
 
 	public void step() {
 		ParticleMover.particlePush(this);
-		collision.check(particles, f, psolver, tstep);
-		currentGrid.updateGrid(particles);
+//		collision.check(particles, f, psolver, tstep);
+//		currentGrid.updateGrid(particles);
 	}
 
 }
