@@ -20,7 +20,7 @@
 package org.openpixi.pixi.ui;
 
 import org.openpixi.pixi.physics.InitialConditions;
-import org.openpixi.pixi.physics.ParticleMover;
+import org.openpixi.pixi.physics.SimpleParticleMover;
 import org.openpixi.pixi.physics.Simulation;
 import org.openpixi.pixi.physics.force.ConstantForce;
 import org.openpixi.pixi.physics.force.SimpleGridForce;
@@ -44,7 +44,7 @@ public class MainBatch {
 		force.ex = 0.1;
 		s1.f.add(force);
 		s1.f.add(new SimpleGridForce(s1));
-		ParticleMover.prepareAllParticles(s1);
+		s1.particleMover.prepareAllParticles(s1);
 		
 		System.out.println("-------- INITIAL CONDITIONS--------");		
 		

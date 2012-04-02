@@ -20,9 +20,10 @@
 package org.openpixi.pixi.physics;
 
 
-public class ParticleMover {
+public class SimpleParticleMover implements IParticleMover {
 
-	public static void particlePush(Simulation s) {        
+    @Override
+	public void particlePush(Simulation s) {        
 		for (Particle2D p : s.particles) {
 			s.psolver.step(p, s.f, s.tstep);
 			s.boundary.check(p, s.f, s.psolver, s.tstep);
@@ -30,15 +31,21 @@ public class ParticleMover {
 		
 	}
 
-	public static void prepareAllParticles(Simulation s) {
+    @Override
+	public void prepareAllParticles(Simulation s) {
 		for (Particle2D p : s.particles) {
 			s.psolver.prepare(p, s.f, s.tstep);
 		}
 	}
 
-	public static void completeAllParticles(Simulation s) {
+    @Override
+	public void completeAllParticles(Simulation s) {
 		for (Particle2D p : s.particles) {
 			s.psolver.complete(p, s.f, s.tstep);
 		}
 	}
+
+    public void finish() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

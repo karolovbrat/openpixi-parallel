@@ -47,6 +47,7 @@ public class Simulation {
 	public FieldSolver fsolver;
 	public CurrentGrid currentGrid;
 	public Collision collision;
+    public IParticleMover particleMover;
     
 	//public Detector detector;
 	//public CollisionAlgorithm algorithm;
@@ -70,6 +71,7 @@ public class Simulation {
 		//algorithm = new CollisionAlgorithm();
 		collision = new Collision();
 		//collision = new ElasticCollisionSweepPrune();
+        particleMover = new SimpleParticleMover();
 	}
 	
 	public void setSize(double width, double height) {
@@ -80,7 +82,7 @@ public class Simulation {
 	}
 
 	public void step() {
-		ParticleMover.particlePush(this);
+		particleMover.particlePush(this);
 //		collision.check(particles, f, psolver, tstep);
 //		currentGrid.updateGrid(particles);
 	}

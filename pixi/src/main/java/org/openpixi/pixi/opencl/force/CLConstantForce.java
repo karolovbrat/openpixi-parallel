@@ -36,7 +36,7 @@ public class CLConstantForce implements IKernelFragment {
         p.defineMacro("FGY", gy);
         p.defineMacro("FEX", ex);
         p.defineMacro("FEY", ey);
-        p.defineMacro("GBZ", bz);
+        p.defineMacro("FBZ", bz);
         p.defineMacro("FDRAG", drag);
     }
 

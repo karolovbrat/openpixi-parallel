@@ -1,10 +1,6 @@
 package org.openpixi.pixi.opencl;
 
-import com.nativelibs4java.opencl.CLBuffer;
-import com.nativelibs4java.opencl.CLContext;
-import com.nativelibs4java.opencl.CLEvent;
-import com.nativelibs4java.opencl.CLMem;
-import com.nativelibs4java.opencl.CLQueue;
+import com.nativelibs4java.opencl.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.bridj.Pointer;
@@ -25,7 +21,7 @@ public class CLParticles2DConvertor {
     
     private CLContext context;
     private CLQueue queue;
-    private CLBuffer<Double> devParticles;
+    private CLBuffer<Float> devParticles;
     
     private int particleCount = 0;
     
@@ -35,7 +31,7 @@ public class CLParticles2DConvertor {
     }
     
     
-    public CLBuffer<Double> getDevParticles() {
+    public CLBuffer<Float> getDevParticles() {
         return devParticles;
     }
     
@@ -46,26 +42,26 @@ public class CLParticles2DConvertor {
      * @param particles List of particles
      * @return OpenCL buffer with particles
      */
-    public CLBuffer<Double> setDevParticles(List<Particle2D> particles) {
+    public CLBuffer<Float> setDevParticles(List<Particle2D> particles) {
         particleCount = particles.size();
         
         // To copy the particles we have to convert them from list of Particle2D 
         // structures to list of doubles.
-        Pointer<Double> hostParticles = Pointer.allocateDoubles(
+        Pointer<Float> hostParticles = Pointer.allocateFloats(
                 particles.size() * PARTICLE_SIZE);   
         for (int i = 0; i < particles.size(); ++i) {
-            hostParticles.set(i * PARTICLE_SIZE + 0, particles.get(i).x);
-            hostParticles.set(i * PARTICLE_SIZE + 1, particles.get(i).y);
-            hostParticles.set(i * PARTICLE_SIZE + 2, particles.get(i).vx);
-            hostParticles.set(i * PARTICLE_SIZE + 3, particles.get(i).vy);
-            hostParticles.set(i * PARTICLE_SIZE + 4, particles.get(i).ax);
-            hostParticles.set(i * PARTICLE_SIZE + 5, particles.get(i).ay);
-            hostParticles.set(i * PARTICLE_SIZE + 6, particles.get(i).radius);
-            hostParticles.set(i * PARTICLE_SIZE + 7, particles.get(i).mass);
-            hostParticles.set(i * PARTICLE_SIZE + 8, particles.get(i).charge);
+            hostParticles.set(i * PARTICLE_SIZE + 0, (float)particles.get(i).x);
+            hostParticles.set(i * PARTICLE_SIZE + 1, (float)particles.get(i).y);
+            hostParticles.set(i * PARTICLE_SIZE + 2, (float)particles.get(i).vx);
+            hostParticles.set(i * PARTICLE_SIZE + 3, (float)particles.get(i).vy);
+            hostParticles.set(i * PARTICLE_SIZE + 4, (float)particles.get(i).ax);
+            hostParticles.set(i * PARTICLE_SIZE + 5, (float)particles.get(i).ay);
+            hostParticles.set(i * PARTICLE_SIZE + 6, (float)particles.get(i).radius);
+            hostParticles.set(i * PARTICLE_SIZE + 7, (float)particles.get(i).mass);
+            hostParticles.set(i * PARTICLE_SIZE + 8, (float)particles.get(i).charge);
         }
         
-        devParticles = context.createDoubleBuffer(
+        devParticles = context.createFloatBuffer(
                 CLMem.Usage.InputOutput, hostParticles, true);
         return devParticles;
     }
@@ -77,7 +73,7 @@ public class CLParticles2DConvertor {
     public ArrayList<Particle2D> getPixiParticles(CLEvent ... eventsToWaitFor) {
         assert particleCount != 0;
         
-        Pointer<Double> hostParticles = devParticles.read(queue, eventsToWaitFor);
+        Pointer<Float> hostParticles = devParticles.read(queue, eventsToWaitFor);
         ArrayList<Particle2D> pixiParticles = new ArrayList<Particle2D>();
         
         // We need to convert the list of doubles coming from the device to
@@ -93,7 +89,7 @@ public class CLParticles2DConvertor {
             p.radius = hostParticles.get(i * PARTICLE_SIZE + 6);
             p.mass = hostParticles.get(i * PARTICLE_SIZE + 7);
             p.charge = hostParticles.get(i * PARTICLE_SIZE + 8);
-            pixiParticles.set(i,p);
+            pixiParticles.add(p);
         }
         
         return pixiParticles;

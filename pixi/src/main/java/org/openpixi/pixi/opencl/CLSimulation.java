@@ -1,11 +1,6 @@
 package org.openpixi.pixi.opencl;
 
-import com.nativelibs4java.opencl.CLContext;
-import com.nativelibs4java.opencl.CLEvent;
-import com.nativelibs4java.opencl.CLKernel;
-import com.nativelibs4java.opencl.CLProgram;
-import com.nativelibs4java.opencl.CLQueue;
-import com.nativelibs4java.opencl.JavaCL;
+import com.nativelibs4java.opencl.*;
 import com.nativelibs4java.util.IOUtils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -29,9 +24,12 @@ import org.openpixi.pixi.physics.Particle2D;
  * @author jan
  */
 public class CLSimulation {
-    private static final String PARTICLE2D_SOURCE = "Particle2D.h";
+    
+    private static final String PARTICLE2D_SOURCE = "Particle2D.cl";
     private static final String MOVER_SOURCE = "ParticleMover.cl";
-    private static final String MOVER_KERNEL = "moverStep";
+    private static final String MOVER_KERNEL = "move";
+    private static final String FINAL_KERNEL_FILE = "FinalKernel.cl";
+
     
     // OpenCL members
     
@@ -68,9 +66,10 @@ public class CLSimulation {
         solver = new CLEuler();        
         boundary = new CLHardWallBoundary();
         boundary.setBoundaries(0, 0, width, height);
-                
+        
         context = JavaCL.createBestContext();
         queue = context.createDefaultQueue();
+        p2DConv = new CLParticles2DConvertor(context, queue);
     }
     
     
@@ -101,17 +100,20 @@ public class CLSimulation {
      */
     public void createProgram() throws IOException {
         program = context.createProgram(
-                IOUtils.readText(this.getClass().getResource(PARTICLE2D_SOURCE)),
-                force.getKernelCode(),
-                boundary.getKernelCode(),
-                solver.getKernelCode(),
+                IOUtils.readText(this.getClass().getResource(PARTICLE2D_SOURCE)) +
+                force.getKernelCode() +
+                boundary.getKernelCode() +
+                solver.getKernelCode() +
                 IOUtils.readText(this.getClass().getResource(MOVER_SOURCE)));
         
         force.defineMacros(program);
         boundary.defineMacros(program);
         solver.defineMacros(program);
         
-        mover = program.createKernel(MOVER_KERNEL, p2DConv.getDevParticles(), tstep);
+        // Write the final kernel file for debugging / future reference
+        writeOpenCLSource(FINAL_KERNEL_FILE);
+        
+        mover = program.createKernel(MOVER_KERNEL, p2DConv.getDevParticles(), (float)tstep);
     }
     
     

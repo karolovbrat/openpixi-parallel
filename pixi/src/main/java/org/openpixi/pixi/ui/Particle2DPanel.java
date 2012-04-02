@@ -164,7 +164,7 @@ public class Particle2DPanel extends JPanel {
 			InitialConditions.initSpring(s, force, 1);
 			break;
 		}
-		ParticleMover.prepareAllParticles(s);
+		s.particleMover.prepareAllParticles(s);
 		timer.start();
 	}
 	
@@ -231,7 +231,7 @@ public class Particle2DPanel extends JPanel {
 	
 	public void algorithmChange(int id)
 	{
-		ParticleMover.completeAllParticles(s);
+		s.particleMover.completeAllParticles(s);
 		
 		switch(id) {
 		case 0:
@@ -260,7 +260,7 @@ public class Particle2DPanel extends JPanel {
 			break;
 			}
 
-		ParticleMover.prepareAllParticles(s);
+		s.particleMover.prepareAllParticles(s);
 	}
 	
 	public void collisionChange(int i) {
