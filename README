@@ -7,6 +7,9 @@ The OpenCL parallelization of pixi is incorporated to the existing java code
 using JavaCL (library for calling OpenCL kernels and writing OpenCL host code
 in Java).
 
+To run the code (also just the tests) one needs OpenCL sdk to be installed. 
+However, the code can be compiled without OpenCL with mvn compile.
+
 The provided sample parallelizes the particle movement and boundary checking.
 It basically parallelizes the method SimpleParticleMover.particlePush() 
 (in the original code the name of the class was just ParticleMover).
@@ -16,6 +19,11 @@ detections and resolutions are not implemented in the sample. Therefore,
 when comparing the parallel simulation to the original one the current grid
 update and collision detections are turned off (commented out). Furthermore, 
 the sample was only tested in batch (non-interactive) mode.
+
+The sample was tested to yield the same results as the sequential version
+(see Test Packages/org.openpixi.pixi.opencl.CLSimulationTest.java).
+In addition, the performance of the sample was briefly compared to the 
+sequential version (see org.openpixi.pixi.ui.MainParallelProfiler.java). 
 
 DESIGN
 ======
@@ -97,5 +105,4 @@ Intel Core 2 Duo P8700 (2 cores) + no graphics card => OpenCL runs on processor
 Original versin: 0.5611s 
 Threaded version: 0.8464s
 OpenCL version: 1.0346s
-
 
